@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Instapram</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Paste BOTH strings as required -->
+    <string name="back4app_app_id">7okxepuTnS2czFSxKTOfJui6edTrFXXN2oNYL0N3</string>
+    <string name="back4app_client_key">tJyM36NYb5NFY3Y43FvnMCuig5j6jetJGWC00REo</string>
+
+</resources>
