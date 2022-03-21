@@ -1,5 +1,6 @@
 package com.parth8199.instapram
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,10 +17,39 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+      if (ParseUser.getCurrentUser() != null) {
+          goToMainActivity()
+      }
+
         findViewById<MaterialButton>(R.id.btnLogin).setOnClickListener {
             val username = findViewById<TextInputEditText>(R.id.username_edit_text).text.toString()
             val password = findViewById<TextInputEditText>(R.id.password_edit_text).text.toString()
             loginUser(username, password)
+        }
+        findViewById<MaterialButton>(R.id.btnSignin).setOnClickListener {
+            val username = findViewById<TextInputEditText>(R.id.username_edit_text).text.toString()
+            val password = findViewById<TextInputEditText>(R.id.password_edit_text).text.toString()
+            signUp(username, password)
+        }
+    }
+
+    private fun signUp(username: String, password: String) {
+        val user = ParseUser()
+
+        // Set fields for the user to be created
+        user.setUsername(username)
+        user.setPassword(password)
+
+        user.signUpInBackground { e ->
+            if (e == null) {
+                // Hooray! Let them use the app now.
+
+            } else {
+                // Sign up didn't succeed. Look at the ParseException
+                // to figure out what went wrong
+                e.printStackTrace()
+
+            }
         }
     }
 
@@ -29,6 +59,7 @@ class LoginActivity : AppCompatActivity() {
                 if (user != null) {
                     //Login Successful
                     Log.i(TAG, "Logged in Successfully")
+                    goToMainActivity()
                 } else {
                     // Signup failed.  Look at the ParseException to see what happened.
                     e.printStackTrace()
@@ -36,6 +67,12 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
         )
+    }
+
+    private fun goToMainActivity() {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     companion object {
