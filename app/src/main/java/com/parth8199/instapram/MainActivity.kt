@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.parse.FindCallback
@@ -14,21 +16,27 @@ import com.parse.ParseUser
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
+    override fun onCreateOptionsMenu(menu: Menu) : Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.item_logout, menu);
+        return true;
+    }
+    fun onComposeAction(mi: MenuItem) {
+        // handle click here
+        ParseUser.logOut()
+        val currentUser = ParseUser.getCurrentUser()
+        if (currentUser == null) {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener {
-            ParseUser.logOut()
-            val currentUser = ParseUser.getCurrentUser()
-            if (currentUser == null) {
-                val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
-
         queryPosts()
+
     }
 
     private fun queryPosts() {
@@ -50,4 +58,5 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+
 }

@@ -16,8 +16,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-      if (ParseUser.getCurrentUser() != null) {
+        getSupportActionBar()!!.hide();
+        if (ParseUser.getCurrentUser() != null) {
           goToMainActivity()
       }
 
