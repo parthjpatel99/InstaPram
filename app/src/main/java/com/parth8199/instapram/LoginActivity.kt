@@ -18,8 +18,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         getSupportActionBar()!!.hide();
         if (ParseUser.getCurrentUser() != null) {
-          goToMainActivity()
-      }
+            goToMainActivity()
+        }
 
         findViewById<MaterialButton>(R.id.btnLogin).setOnClickListener {
             val username = findViewById<TextInputEditText>(R.id.username_edit_text).text.toString()

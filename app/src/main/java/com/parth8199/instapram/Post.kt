@@ -8,7 +8,7 @@ import com.parse.ParseUser
 @ParseClassName("Post")
 class Post : ParseObject() {
 
-    fun getDescription() : String? {
+    fun getDescription(): String? {
         return getString(KEY_DESCRIPTION)
     }
 
@@ -20,20 +20,21 @@ class Post : ParseObject() {
         return getParseUser(KEY_USER)
     }
 
-    fun setDescription(description :String){
-        put(KEY_DESCRIPTION,description)
+    fun setDescription(description: String) {
+        put(KEY_DESCRIPTION, description)
     }
 
-    fun setImage(parsefile: ParseFile){
-        put(KEY_IMAGE,parsefile)
+    fun setImage(parsefile: ParseFile) {
+        put(KEY_IMAGE, parsefile)
     }
 
-    fun setUser(user: ParseUser){
+    fun setUser(user: ParseUser) {
         put(KEY_USER, user)
     }
-    companion object{
+
+    companion object {
         const val KEY_DESCRIPTION = "description"
-        const val KEY_IMAGE ="image"
+        const val KEY_IMAGE = "image"
         const val KEY_USER = "user"
     }
 }

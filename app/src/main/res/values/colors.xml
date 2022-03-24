@@ -10,4 +10,5 @@
     <color name="magenta_200">#f48fb1</color>
     <color name="magenta_500">#e91e63</color>
     <color name="magenta_700">#c2185b</color>
+    <color name="red_200">#cc0000</color>
 </resources>
