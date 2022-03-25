@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity() {
                 exception.printStackTrace()
             } else {
                 Log.i(TAG, "Successfully saved post")
+                Toast.makeText(this, "Posted Successfully", Toast.LENGTH_SHORT).show()
             }
         }
 

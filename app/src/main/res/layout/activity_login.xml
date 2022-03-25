@@ -30,9 +30,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="132dp"
+            android:fontFamily="@font/lato"
             android:text="Instapram"
-            android:textAllCaps="true"
-            android:textSize="16sp" />
+            android:textAllCaps="false"
+            android:textSize="34sp" />
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
