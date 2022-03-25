@@ -22,6 +22,7 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 - [x] Material UI for components to improve Ui
+- [x] Logout and go to Login screen
 
 ## Video Walkthrough
 
