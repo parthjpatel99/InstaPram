@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.parse.*
@@ -113,9 +114,25 @@ class MainActivity : AppCompatActivity() {
             if (photoFile != null) {
                 submitPost(description, user, photoFile!!)
             } else {
-                //TODO
+                Toast.makeText(this,"Please take an image",Toast.LENGTH_SHORT).show()
             }
 
+        }
+
+        findViewById<BottomNavigationView>(R.id.bottom_navigation).setOnItemSelectedListener {
+            item->
+            when(item.itemId){
+                R.id.action_home -> {
+                    //TODO
+                }
+                R.id.action_compose -> {
+                    //TODO
+                }
+                R.id.action_profile -> {
+                    //TODO
+                }
+            }
+            true
         }
         //queryPosts()
     }
