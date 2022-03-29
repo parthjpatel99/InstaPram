@@ -13,76 +13,21 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.parse.*
+import com.parth8199.instapram.fragments.ComposeFragment
+import com.parth8199.instapram.fragments.FeedFragment
 import java.io.File
 
-private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
-
-    fun onLaunchCamera() {
-        // create Intent to take a picture and return control to the calling application
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName)
-
-        // wrap File object into a content provider
-        // required for API >= 24
-        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        if (photoFile != null) {
-            val fileProvider: Uri =
-                FileProvider.getUriForFile(this, "com.codepath.fileprovider", photoFile!!)
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-
-            // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-            // So as long as the result is not null, it's safe to use the intent.
-
-            // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-            // So as long as the result is not null, it's safe to use the intent.
-            if (intent.resolveActivity(packageManager) != null) {
-                // Start the image capture intent to take photo
-                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE)
-            }
-        }
-    }
-
-    fun getPhotoFileUri(fileName: String): File {
-        // Get safe storage directory for photos
-        // Use `getExternalFilesDir` on Context to access package-specific directories.
-        // This way, we don't need to request external read/write runtime permissions.
-        val mediaStorageDir =
-            File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG)
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-            Log.d(TAG, "failed to create directory")
-        }
-
-        // Return the file target for the photo based on filename
-        return File(mediaStorageDir.path + File.separator + fileName)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // by this point we have the camera photo on disk
-                val takenImage = BitmapFactory.decodeFile(photoFile!!.absolutePath)
-                // RESIZE BITMAP, see section below
-                // Load the taken image into a preview
-                val ivPreview: ImageView = findViewById(R.id.iv_image)
-                ivPreview.setImageBitmap(takenImage)
-            } else { // Result was a failure
-                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -90,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         return true;
     }
 
-    fun onComposeAction(mi: MenuItem) {
+    fun onLogoutAction(mi: MenuItem) {
         // handle click here
         ParseUser.logOut()
         val currentUser = ParseUser.getCurrentUser()
@@ -104,55 +49,29 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        findViewById<MaterialButton>(R.id.btn_change_image).setOnClickListener {
-            onLaunchCamera()
-        }
-        findViewById<MaterialButton>(R.id.btn_save).setOnClickListener {
-            val description = findViewById<TextInputEditText>(R.id.et_description).text.toString()
-            val user = ParseUser.getCurrentUser()
-            if (photoFile != null) {
-                submitPost(description, user, photoFile!!)
-            } else {
-                Toast.makeText(this,"Please take an image",Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
+        val fragmentManager: FragmentManager = supportFragmentManager
         findViewById<BottomNavigationView>(R.id.bottom_navigation).setOnItemSelectedListener {
             item->
+            var fragmentToShow: Fragment? =null
             when(item.itemId){
                 R.id.action_home -> {
-                    //TODO
+                    fragmentToShow = FeedFragment()
                 }
                 R.id.action_compose -> {
-                    //TODO
+                    fragmentToShow = ComposeFragment()
                 }
                 R.id.action_profile -> {
                     //TODO
                 }
             }
+
+            if(fragmentToShow!= null){
+                fragmentManager.beginTransaction().replace(R.id.flContainer, fragmentToShow).commit()
+            }
             true
         }
+        findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = R.id.action_home
         //queryPosts()
-    }
-
-    private fun submitPost(description: String, user: ParseUser, file: File) {
-        val post = Post()
-        post.setDescription(description)
-        post.setUser(user)
-        post.setImage(ParseFile(file))
-        post.saveInBackground { exception ->
-            if (exception != null) {
-                Log.e(TAG, "Error submitting post: ")
-                exception.printStackTrace()
-            } else {
-                Log.i(TAG, "Successfully saved post")
-                Toast.makeText(this, "Posted Successfully", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-
     }
 
     private fun queryPosts() {
@@ -176,6 +95,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+    companion object {
+        const val TAG = "MainActivity"
     }
 
 }
