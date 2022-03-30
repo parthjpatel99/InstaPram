@@ -71,31 +71,10 @@ class MainActivity : AppCompatActivity() {
             true
         }
         findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = R.id.action_home
-        //queryPosts()
+
     }
 
-    private fun queryPosts() {
-        val query: ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
 
-        query.include(Post.KEY_USER)
-        query.findInBackground(object : FindCallback<Post> {
-            override fun done(posts: MutableList<Post>?, e: ParseException?) {
-                if (e != null) {
-                    Log.e(TAG, "Error Fetching Posts")
-                } else {
-                    if (posts != null) {
-                        for (post in posts) {
-                            Log.i(
-                                TAG,
-                                "Post: " + post.getDescription() + ", username: " + post.getUser()?.username
-                            )
-                        }
-                    }
-                }
-            }
-
-        })
-    }
     companion object {
         const val TAG = "MainActivity"
     }
