@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.parse.*
 import com.parth8199.instapram.fragments.ComposeFragment
 import com.parth8199.instapram.fragments.FeedFragment
+import com.parth8199.instapram.fragments.ProfileFragment
 import java.io.File
 
 
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     fragmentToShow = ComposeFragment()
                 }
                 R.id.action_profile -> {
-                    //TODO
+                   fragmentToShow = ProfileFragment()
                 }
             }
 

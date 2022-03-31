@@ -17,7 +17,7 @@ import com.parth8199.instapram.PostAdapter
 import com.parth8199.instapram.R
 
 
-class FeedFragment : Fragment() {
+open class FeedFragment : Fragment() {
 
     lateinit var rvPosts: RecyclerView
     lateinit var postAdapter: PostAdapter
@@ -40,7 +40,7 @@ class FeedFragment : Fragment() {
         rvPosts.layoutManager = LinearLayoutManager(requireContext())
         queryPosts()
     }
-    private fun queryPosts() {
+    open fun queryPosts() {
         val query: ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
 
         query.include(Post.KEY_USER)
